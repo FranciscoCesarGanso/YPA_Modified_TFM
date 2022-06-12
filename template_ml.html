@@ -1,0 +1,221 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>YPA - Address book</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	</head>
+	<style type="text/css">
+		p {
+			width:100%;
+			overflow-wrap:anywhere;
+		}
+    	img {
+		  width: 100px;
+		  height: 200px;
+		}
+		.selection{
+		  border: 4px solid orange;
+		  border-radius: 4px;
+		  width: 100px;
+		  height: 200px
+		}
+		img:hover {
+		  box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+		}
+		#table{
+			max-height: 60%;
+			overflow-y: auto;
+		}
+		#text_selected{
+			max-height: 20%
+		}
+		.text_selected-style{
+		  border: 4px solid #ddd;
+		  border-radius: 4px;
+		  width: 100%;
+		  max-height: 20%;
+		  margin:5px;
+		  padding: 10px;
+		  display: flex;
+	      
+	      justify-content: center;
+	      overflow-y:auto;
+		}
+
+
+	</style>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+          <a class="navbar-brand" href="#">'Your Phone' Analyzer</a>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="conversations"><b>Conversations</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="address-book"><b>Address book</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="photos"><b>Photos</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="call-history"><b>Call history</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="phone-apps"><b>Apps</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="deleted"><b>Deleted</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="timeline"><b>Timeline</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="phone-map"><b>Phone Map</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="connections"><b>Connections graph </b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="ml"><b>Detection/Recognition</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="imei"><b>IMEI Search</b></a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+		
+        <br>
+        <div class="container">
+			<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="#tab-text-detection" role="button" id="text-detection"><b>Text</b></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#tab-face-detection" role="button" id="face-detection"><b>Face Detection</b></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#tab-face-recognition" role="button" id="face-recognition"><b>Face Recognition</b></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#tab-weapon-detection" role="button" id="weapon-detection"><b>Weapon Detection</b></a>
+					</li>
+				</ul>
+			</nav>
+				<div class="tab-content" id="tab-text-detection">
+					<div id=table>
+						<table class="table" >
+							<tbody id="text-detection-table">
+							</tbody>
+						</table>
+					</div>
+					<div>
+							<p id=text_selected></p>
+					</div>
+				</div>
+				
+				<div class="tab-content" id="tab-face-detection" style="display:none">
+					
+					<table class="table">
+						<tbody id="face-detection-table">
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-content" id="tab-face-recognition" style="display:none">
+					<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+						<ul class="navbar-nav" id="recognition-nav">
+						</ul>
+					</nav>
+					<div id=tables>
+						
+					</div>
+				</div>
+				<div class="tab-content" id="tab-weapon-detection" style="display:none">
+					<table class="table">
+						<tbody id="weapon-detection-table">
+						</tbody>
+					</table>
+				</div>	
+        </div>
+        <div id="page-content-wrapper">
+            <!-- Photo modals -->
+        </div> 
+    </body>
+		<script>
+
+
+		function swap_recognition(id_padre){
+			var elements=document.getElementsByClassName("recognition-tab")
+			for(element in elements){
+				
+				if(elements[element].id=="tab-"+id_padre){
+					elements[element].style.display = 'block'
+				}
+				else{
+					elements[element].style.display= 'none'
+				}
+			}
+
+		}
+		suspects= document.getElementsByClassName("nav-link-recognition");
+		for(var i=0; i< suspects.length;i++){
+			suspects[i].addEventListener("click", function(e){
+					swap_recognition(e.target.parentElement.id)
+			});
+
+		}
+
+		function swap(one, two,three,four) {
+			document.getElementById(one).style.display = 'block';
+			document.getElementById(two).style.display = 'none';
+			document.getElementById(three).style.display = 'none';
+			document.getElementById(four).style.display = 'none';
+		}
+		document.getElementById('text-detection').addEventListener('click',function(e){
+			swap('tab-text-detection','tab-face-detection',"tab-face-recognition","tab-weapon-detection");
+			
+		});
+		document.getElementById('face-detection').addEventListener('click',function(e){
+			swap('tab-face-detection','tab-text-detection',"tab-face-recognition","tab-weapon-detection");
+		});
+		document.getElementById('face-recognition').addEventListener('click',function(e){
+			swap("tab-face-recognition",'tab-text-detection','tab-face-detection',"tab-weapon-detection");
+		});
+		document.getElementById('weapon-detection').addEventListener('click',function(e){
+			swap("tab-weapon-detection","tab-text-detection",'tab-face-detection','tab-face-recognition');
+		});
+		btns = document.getElementsByClassName("text-button");
+	    for (var i = 0; i < btns.length; i++) {
+	        btns[i].addEventListener("click", function (e) {
+	        	var modal_id="modal" + e.target.id;
+	        	var p=document.getElementById("text_selected");
+	        	var modal=document.getElementById(modal_id)
+				p.innerText=modal.textContent
+				p.classList.add("text_selected-style")
+				imgs = document.getElementsByTagName("img")
+				for(var j =0; j<imgs.length;j++){
+					if(imgs[j].id==e.target.id){
+						if(!imgs[j].classList.contains("selection")){
+							imgs[j].classList.add("selection");
+						}
+					}
+					else{
+						if(imgs[j].classList.contains("selection")){
+							imgs[j].classList.remove("selection");
+						}
+					}
+				}
+	        });
+	    }
+		</script>
+        <!-- Bootstrap core JavaScript -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    </body>
+</html>

@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>YPA - Address book</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	</head>
+	<style type="text/css">
+		p {
+			overflow-wrap:anywhere;
+		}
+		.table{
+			width: 100%;
+		}
+    
+
+	</style>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+          <a class="navbar-brand" href="#">'Your Phone' Analyzer</a>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="conversations"><b>Conversations</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="address-book"><b>Address book</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="photos"><b>Photos</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="call-history"><b>Call history</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="phone-apps"><b>Apps</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="deleted"><b>Deleted</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="timeline"><b>Timeline</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="phone-map"><b>Phone Map</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="connections"><b>Connections graph </b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="ml"><b>Detection/Recognition</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="imei"><b>IMEI Search</b></a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+		
+        <br>
+        <div class="container">
+			<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="#tab-deleted-parser" role="button" id="deleted-parser"><b>Deleted</b></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#tab-undark" role="button" id="undark"><b>Undark</b></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#tab-b2l" role="button" id="b2l"><b>B2Life</b></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#tab-crawler" role="button" id="crawler"><b>Wal Crawler</b></a>
+					</li>
+				</ul>
+			</nav>
+				<div class="tab-content" id="tab-delete-parser">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">Type</th>
+								<th scope="col">Offset</th>
+								<th scope="col">Lenght</th>
+								<th scope="col">Data</th>
+							</tr>
+						</thead>
+						<tbody id="delete-parser-table">
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-content" id="tab-undark" style="display:none">
+					
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">Data</th>
+							</tr>
+						</thead>
+						<tbody id="undark-table">
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-content" id="tab-b2l" style="display:none">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">page</th>
+								<th scope="col">row</th>
+							</tr>
+						</thead>
+						<tbody id="b2l-table">
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-content" id="tab-crawler" style="display:none">
+					<table class="table">
+						<thead id="crawler-head">
+							<!--
+								necesito poner
+							<tr>
+								<th scope="col">page</th>
+								<th scope="col">row</th>
+							</tr>
+							-->
+						</thead>
+						<tbody id="crawler-table">
+						</tbody>
+					</table>
+				</div>	
+        </div>
+		<script>		
+		function swap(one, two,three,four) {
+			document.getElementById(one).style.display = 'block';
+			document.getElementById(two).style.display = 'none';
+			document.getElementById(three).style.display = 'none';
+			document.getElementById(four).style.display = 'none';
+		}
+		document.getElementById('deleted-parser').addEventListener('click',function(e){
+			swap('tab-delete-parser','tab-undark',"tab-b2l","tab-crawler");
+			
+		});
+		document.getElementById('undark').addEventListener('click',function(e){
+			swap('tab-undark','tab-delete-parser',"tab-b2l","tab-crawler");
+		});
+		document.getElementById('b2l').addEventListener('click',function(e){
+			swap("tab-b2l",'tab-undark','tab-delete-parser',"tab-crawler");
+		});
+		document.getElementById('crawler').addEventListener('click',function(e){
+			swap("tab-crawler","tab-b2l",'tab-undark','tab-delete-parser');
+		});
+		</script>
+        <!-- Bootstrap core JavaScript -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    </body>
+</html>

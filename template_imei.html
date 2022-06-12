@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>YPA - Address book</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" rel="stylesheet"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment-with-locales.min.js" integrity="sha512-vFABRuf5oGUaztndx4KoAEUVQnOvAIFs59y4tO0DILGWhQiFnFHiR+ZJfxLDyJlXgeut9Z07Svuvm+1Jv89w5g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
+	</head>
+	<style type="text/css">
+		p {
+			overflow-wrap:anywhere;
+		}
+
+		.header{
+			color: blue;
+		}
+		.cont_elem-imei-search{
+			width: 100%;
+			max-height: 100vh;
+			display: grid;
+			grid-template-columns: 2fr 2fr;
+  			height: 100vh;
+		}
+		#form{
+			display: grid;
+			grid-template-columns: repeat(1, 0.5fr);
+			grid-template-rows: 50px 50px 50px;
+			gap: 5px;
+		}
+		
+		#table-scroll {
+			border: 2px grey solid;
+			min-height: 70vh;
+	  		max-height:70vh;
+	  		overflow:auto;  
+	  		
+		}
+		#results{
+			margin: 5px;
+		}
+		button{
+			margin: 5px
+		}
+		
+		
+
+		
+    
+
+	</style>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+          <a class="navbar-brand" href="#">'Your Phone' Analyzer</a>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="conversations"><b>Conversations</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="address-book"><b>Address book</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="photos"><b>Photos</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="call-history"><b>Call history</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="phone-apps"><b>Apps</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="deleted"><b>Deleted</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="timeline"><b>Timeline</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="phone-map"><b>Phone Map</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="connections"><b>Connections graph </b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="ml"><b>Detection/Recognition</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="imei"><b>IMEI Search</b></a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+		
+        <br>
+        <div class="container">
+			<div class="cont_elem-imei-search">
+				<div id="form">
+					<h5>Introduce IMEI</h5>
+					<input type="text" name="imei" id="imei_val" placeholder="Introduce an imei" value="">
+					<button id="submit" class="btn btn-primary" onclick="getInfo(event)"> Search info</button>
+				</div>
+				<div id="content_results">
+					<h5>IMEI Model information</h5>
+					<div id="table-scroll">
+						<table id="results">
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+		function getInfo(event){
+			var table = document.getElementById("results");
+			table.innerHTML = ""
+			imei=document.getElementById("imei_val").value
+			imei_url="https://www.phonenumbertrack.com/imei-track?imei="+imei
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", imei_url);
+
+			xhr.onreadystatechange = function () {
+	   		if (xhr.readyState === 4) {
+	   			var dom = new DOMParser().parseFromString(xhr.responseText, 'text/html');
+	   			
+	   			var card_header= dom.querySelectorAll('.card-title')
+	   			var card_body = dom.querySelectorAll('.card-body')
+	   			
+	   			card_body.forEach(function(value,i){
+	   			//console.log(value.querySelectorAll("tr"))
+	   			header_info=value.querySelectorAll("tr")
+	   			//info_value= value.querySelectorAll("td")
+	   			add_html= "<tr><td class='header'><h5>"+card_header[i].innerText+"</h5></td></tr>"
+	   			for(var j=0; j< header_info.length;j++){
+	   					
+	   				add_html+= "<tr>"+header_info[j].innerHTML+"</tr>"
+
+	   			}
+	   			table.innerHTML+=add_html	
+
+	   			});
+	   			//console.log(dom.querySelector('#question-header h1').innerText)
+	      		// tengo que buscar por stos card-body -> son los que devuelve el numero de dispositovos  dentro de aqui  son varias tablas con th es el nombre de la columna y td el valor
+	   		}};
+
+			xhr.send();		
+		}
+
+
+		</script>
+        <!-- Bootstrap core JavaScript -->
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    </body>
+</html>

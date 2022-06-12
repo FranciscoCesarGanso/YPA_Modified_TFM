@@ -1,0 +1,359 @@
+<!DOCTYPE doctype html>
+
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta content="" name="description"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>YPA - Address book</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" rel="stylesheet"/>
+<script src="https://code.highcharts.com/maps/highmaps.js"></script>
+<script src="https://code.highcharts.com/maps/modules/data.js"></script>
+<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
+<script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
+<style type="text/css">
+  .show-modal {
+    position: absolute;
+    top:50%;
+    left: 50%;
+    opacity: 1;
+    z-index: 5;
+    visibility: visible;
+    transform: scale(1.0);
+    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+}
+  .modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.1);
+    transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+}
+
+.modal-content {
+    position: fixed;
+    height: 300px;
+    overflow:auto;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 1rem 1.5rem;
+    width: 24rem;
+    border-radius: 0.5rem;
+}
+
+.close-button {
+    float: right;
+    width: 1.5rem;
+    line-height: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    background-color: lightgray;
+}
+
+.close-button:hover {
+    background-color: darkgray;
+
+
+</style>
+</head>
+        <script type="text/javascript" id="myscript">
+            var datap= 
+            var data=
+            var global_numbers =
+            var spain_numbers =
+            var class_1=
+            var class_2=
+            var class_3=
+            var class_4=
+            var class_5=
+            var class_6=
+        </script>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+          <a class="navbar-brand" href="#">'Your Phone' Analyzer</a>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="conversations"><b>Conversations</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="address-book"><b>Address book</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="photos"><b>Photos</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="call-history"><b>Call history</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="phone-apps"><b>Apps</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="deleted"><b>Deleted</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="timeline"><b>Timeline</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="phone-map"><b>Phone Map</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="connections"><b>Connections graph </b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="ml"><b>Detection/Recognition</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="imei"><b>IMEI Search</b></a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <br>
+        <div id=modal class="modal">
+    <div class="modal-content">
+        <button id="close-button" class="close-button">×</button>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Phone number</th>
+              <th>Display number</th>
+            </tr>
+          <tbody id="table">
+            
+          </tbody>
+          </thead>
+        </table>
+    </div>
+</div>
+        <div id="container">
+            <div>
+                <p><b>(*)</b> These map only focus in mobile phone numbers(+34123456789).</p>
+            </div>
+        </div>
+        <div id="spain">
+        </div>             
+        <script>
+            // Initiate the chart
+        const chart = Highcharts.mapChart('container', {
+          chart: {
+            map: 'custom/world',
+            borderWidth: 1
+          },
+          colors: ['rgba(19,64,117,0.05)', 'rgba(19,64,117,0.2)', 'rgba(19,64,117,0.4)',
+            'rgba(19,64,117,0.5)', 'rgba(19,64,117,0.6)', 'rgba(19,64,117,0.8)', 'rgba(19,64,117,1)'
+          ],
+          title: {
+            text: 'Phone numbers by Country'
+          },
+          mapNavigation: {
+            enabled: true
+          },
+          legend: {
+            title: {
+              text: 'Phone numbers by Country',
+              style: {
+                color: ( // theme
+                  Highcharts.defaultOptions &&
+                  Highcharts.defaultOptions.legend &&
+                  Highcharts.defaultOptions.legend.title &&
+                  Highcharts.defaultOptions.legend.title.style &&
+                  Highcharts.defaultOptions.legend.title.style.color
+                ) || 'black'
+              }
+            },
+            align: 'left',
+            verticalAlign: 'bottom',
+            floating: true,
+            layout: 'vertical',
+            valueDecimals: 0,
+            backgroundColor: ( // theme
+              Highcharts.defaultOptions &&
+              Highcharts.defaultOptions.legend &&
+              Highcharts.defaultOptions.legend.backgroundColor
+            ) || 'rgba(255, 255, 255, 0.85)',
+            symbolRadius: 0,
+            symbolHeight: 14
+          },
+          colorAxis: {
+            dataClasses: [{
+              to: class_1
+            }, {
+              from: class_1,
+              to: class_2
+            }, {
+              from: class_2,
+              to: class_3
+            }, {
+              from: class_3,
+              to: class_4
+            }, {
+              from: class_4,
+              to: class_5
+            }, {
+              from: class_5,
+              to: class_6
+            }, {
+              from: class_6
+            }]
+          },
+          plotOptions: {
+            series: {
+              point: {
+                  events: {
+                    click: function(e) {
+                      $("#table").empty();
+                      table_body=document.getElementById("table");
+                      var country=e.point["hc-key"]
+                      for(const [key,value] of Object.entries(global_numbers) ){
+                            if(key==country){
+                              for(const [number,name] of Object.entries(value)){
+                                var tr = document.createElement("tr");
+                                var number_td = document.createElement("td");
+                                var name_td = document.createElement("td");
+                                number_td.innerHTML=number
+                                name_td.innerHTML=name
+                                tr.appendChild(number_td)
+                                tr.appendChild(name_td)
+                                table_body.appendChild(tr)
+                              }
+                          }
+                      }
+                      ShowModal()      
+                  }
+                }
+              }
+            }
+          },
+          series: [{
+            data: datap,
+            animation: true,
+            name: '# ',
+            states: {
+              hover: {
+                color: '#a4edba'
+              }
+            },
+            shadow: false
+          }]
+        });
+        
+        </script>
+       <script type="text/javascript">
+             //SPAIN
+        (async () => {
+
+    const topology = await fetch(
+        'https://code.highcharts.com/mapdata/countries/es/es-all.topo.json'
+    ).then(response => response.json());
+
+    // Prepare demo data. The data is joined to map using value of 'hc-key'
+    // property by default. See API docs for 'joinBy' for more info on linking
+    // data and map.
+
+    // Create the chart
+    Highcharts.mapChart('spain', {
+        chart: {
+            map: topology,
+            borderWidth: 1
+        },
+
+        title: {
+            text: 'Home telephone numbers by spanish province'
+        },
+
+        subtitle: {
+            text: 'Source map: <a href="http://code.highcharts.com/mapdata/countries/es/es-all.topo.json">Spain</a>'
+        },
+
+        mapNavigation: {
+            enabled: true,
+            buttonOptions: {
+                verticalAlign: 'bottom'
+            }
+        },
+
+        colorAxis: {
+            min: 0
+        },
+        plotOptions: {
+            series: {
+              point: {
+                  events: {
+                    click: function(e) {
+                      $("#table").empty();
+                      table_body=document.getElementById("table");
+                      var country=e.point["hc-key"]
+                      for(const [key,value] of Object.entries(spain_numbers) ){
+                            if(key==country){
+                              for(const [number,name] of Object.entries(value)){
+                                var tr = document.createElement("tr");
+                                var number_td = document.createElement("td");
+                                var name_td = document.createElement("td");
+                                number_td.innerHTML=number
+                                name_td.innerHTML=name
+                                tr.appendChild(number_td)
+                                tr.appendChild(name_td)
+                                table_body.appendChild(tr)
+                              }
+                          }
+                      }
+                      ShowModal()      
+                  }
+                }
+              }
+            }
+          },
+        series: [{
+            data: data,
+            name: '#',
+            states: {
+                hover: {
+                    color: '#BADA55'
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                format: '{point.name}'
+            }
+        }]
+    });
+
+})();
+        </script>
+        <script type="text/javascript">                    
+  
+var closeButton = document.getElementById("close-button");
+closeButton.addEventListener('click',function(){
+    HideModal()
+});
+function HideModal() {
+  var modal = document.getElementById("modal");
+  modal.classList.remove("show-modal");
+  modal.classList.add("modal")
+}
+function ShowModal() {
+  console.log("calllme")
+  var modal = document.getElementById("modal");
+  if(modal.className=="modal"){
+      modal.className="show-modal";
+  }
+}
+$(document).mouseup(function (e) {
+            if ($(e.target).closest("#modal").length
+                        === 0) {
+                HideModal()
+            }
+        });
+</script>
+    </body>
+</html>

@@ -1,0 +1,421 @@
+<!doctype html>
+<html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="description" content="">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>YPA - Timeline</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+      <!-- 
+        CSS TEMPLATE FROM https://codepen.io/tutsplus/pen/ZKpNwm
+      -->
+      <style>
+   *,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px     rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px     rgba(0,0,0,0.5); 
+}
+/* .section SECTION
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.intro {
+
+  padding: 50px 0;
+}
+
+.intro .container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.intro h1 {
+  font-size: 2.5rem;
+}
+
+.intro h2 {
+  font-size: 1.3rem;
+}
+.arrows button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+/* TIMELINE
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.timeline {
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.timeline ol {
+  font-size: 0;
+  width: 100vw;
+  padding: 250px 0;
+  transition: all 1s;
+}
+
+.timeline ol li {
+  position: relative;
+  display: inline-block;
+  list-style-type: none;
+  width: 160px;
+  height: 3px;
+  background: blue;
+
+}
+
+.timeline ol li:last-child {
+  width: 280px;
+}
+
+.timeline ol li:not(:first-child) {
+  margin-left: 14px;
+}
+
+.timeline ol li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 1px);
+  bottom: 0;
+  width: 12px;
+  height: 13px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: black;
+}
+.timeline ol li .outer {
+  position: absolute;
+  left: calc(100% + 7px);
+  width: 300px;
+  padding: 15px;
+  font-size: 1rem;
+  white-space: normal;
+  color: black;
+  background: white;
+  border-style: solid;
+  border-radius: 15px;
+  overflow:hidden;
+}
+.timeline ol li .outer div{
+  overflow-y: auto;
+  max-height:200px 
+}
+
+.timeline ol li .outer ::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+.timeline ol li .outer  div button {
+  margin: 5px;
+  padding: 7px;
+  font-size: 13px;
+  cursor: pointer;
+  background-color: lightblue;
+  color: black;
+  border-radius: 50px;
+}
+
+
+.timeline ol li .outer  div button:hover{
+  background: black;
+  color: lightblue;
+  transition: all 0.4s ease 0s;
+}
+
+
+.timeline ol li:nth-child(odd) .outer  {
+  top: -16px;
+  transform: translateY(-100%);
+}
+
+.timeline ol li:nth-child(odd) .outer ::before {
+  top: 100%;
+  border-width: 8px 8px 0 0;
+  border-color: white transparent transparent transparent;
+}
+
+.timeline ol li:nth-child(even) .outer  {
+  top: calc(100% + 16px);
+}
+
+.timeline ol li:nth-child(even) .outer ::before {
+  top: -8px;
+  border-width: 8px 0 0 8px;
+  border-color: transparent transparent transparent white;
+}
+
+.timeline time {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.timeline ol li .outer div .content {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center
+
+}
+
+/* TIMELINE ARROWS
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.intro .arrows {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-size: 30px;
+}
+
+.intro .arrows .arrow__prev {
+  margin-right: 20px;
+}
+
+.intro .disabled {
+  opacity: .5;
+}
+
+.intro .arrows img {
+  width: 45px;
+  height: 45px;
+}
+
+
+
+
+
+
+
+      </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+          <a class="navbar-brand" href="#">'Your Phone' Analyzer</a>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="conversations"><b>Conversations</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="address-book"><b>Address book</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="photos"><b>Photos</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="call-history"><b>Call history</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="phone-apps"><b>Apps</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="deleted"><b>Deleted</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="timeline"><b>Timeline</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="phone-map"><b>Phone Map</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="connections"><b>Connections graph </b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="ml"><b>Detection/Recognition</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="imei"><b>IMEI Search</b></a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <br>
+        <div class="container">
+        <div class="container-fluid">
+<section class="intro">
+  <div class="container">
+    <h1>Timeline</h1>
+  </div>
+  <div class="arrows">
+    <button class="arrow arrow__prev disabled" disabled>
+      <p>&larr;</p>
+    </button>
+    <button class="arrow arrow__next">
+      <p>&rarr;</p>
+    </button>
+  </div>
+</section>
+  <section class="timeline">
+  <!--
+    Ejemplo
+    <li>
+      <div id=1934>
+        <time>1934</time> 
+        <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium</p>
+      </div>
+    </li>
+  -->
+    <ol id= "timeline-list">
+      
+    </ol>
+  </section>
+</div>
+      </div>
+        </div>
+        <div id="page-content-wrapper">
+            <!-- Photo modals -->
+        </div>       
+        <script type="text/javascript">
+            (function() {
+
+  // VARIABLES
+      const timeline = document.querySelector(".timeline ol"),
+        elH = document.querySelectorAll(".timeline li > div"),
+        arrows = document.querySelectorAll(".intro .arrows .arrow"),
+        arrowPrev = document.querySelector(".intro .arrows .arrow__prev"),
+        arrowNext = document.querySelector(".intro .arrows .arrow__next"),
+        firstItem = document.querySelector(".timeline li:first-child"),
+        lastItem = document.querySelector(".timeline li:last-child"),
+        xScrolling = 280,
+        disabledClass = "disabled";
+
+      // START
+      window.addEventListener("load", init);
+
+      function init() {
+        setEqualHeights(elH);
+        animateTl(xScrolling, arrows, timeline);
+        setSwipeFn(timeline, arrowPrev, arrowNext);
+        setKeyboardFn(arrowPrev, arrowNext);
+      }
+
+      // SET EQUAL HEIGHTS
+      function setEqualHeights(el) {
+        let counter = 0;
+        for (let i = 0; i < el.length; i++) {
+          const singleHeight = el[i].offsetHeight;
+
+          if (counter < singleHeight) {
+            counter = singleHeight;
+          }
+        }
+
+        for (let i = 0; i < el.length; i++) {
+          el[i].style.height = `${counter}px`;
+        }
+      }
+
+      // CHECK IF AN ELEMENT IS IN VIEWPORT
+      // http://stackoverflow.com/questions/123999/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport
+      function isElementInViewport(el) {
+        const rect = el.getBoundingClientRect();
+        return (
+          rect.top >= 0 &&
+          rect.left >= 0 &&
+          rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+          rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+      }
+
+      // SET STATE OF PREV/NEXT ARROWS
+      function setBtnState(el, flag = true) {
+        if (flag) {
+          el.classList.add(disabledClass);
+        } else {
+          if (el.classList.contains(disabledClass)) {
+            el.classList.remove(disabledClass);
+          }
+          el.disabled = false;
+        }
+      }
+
+      // ANIMATE TIMELINE
+      function animateTl(scrolling, el, tl) {
+        let counter = 0;
+        for (let i = 0; i < el.length; i++) {
+          el[i].addEventListener("click", function() {
+            if (!arrowPrev.disabled) {
+              arrowPrev.disabled = true;
+            }
+            if (!arrowNext.disabled) {
+              arrowNext.disabled = true;
+            }
+            const sign = (this.classList.contains("arrow__prev")) ? "" : "-";
+            if (counter === 0) {
+              tl.style.transform = `translateX(-${scrolling}px)`;
+            } else {
+              const tlStyle = getComputedStyle(tl);
+              // add more browser prefixes if needed here
+              const tlTransform = tlStyle.getPropertyValue("-webkit-transform") || tlStyle.getPropertyValue("transform");
+              const values = parseInt(tlTransform.split(",")[4]) + parseInt(`${sign}${scrolling}`);
+              tl.style.transform = `translateX(${values}px)`;
+            }
+
+            setTimeout(() => {
+              isElementInViewport(firstItem) ? setBtnState(arrowPrev) : setBtnState(arrowPrev, false);
+              isElementInViewport(lastItem) ? setBtnState(arrowNext) : setBtnState(arrowNext, false);
+            }, 1100);
+
+            counter++;
+          });
+        }
+      }
+
+      // ADD BASIC KEYBOARD FUNCTIONALITY
+      function setKeyboardFn(prev, next) {
+        document.addEventListener("keydown", (e) => {
+          if ((e.which === 37) || (e.which === 39)) {
+            const timelineOfTop = timeline.offsetTop;
+            const y = window.pageYOffset;
+            if (timelineOfTop !== y) {
+              window.scrollTo(0, timelineOfTop);
+            }
+            if (e.which === 37) {
+              prev.click();
+            } else if (e.which === 39) {
+              next.click();
+            }
+          }
+        });
+      }
+
+    })();
+    </script>
+        <!-- Bootstrap core JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+    </body>
+</html>

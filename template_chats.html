@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>YPA - Conversations</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+        <style type="text/css">
+            img:hover {
+              transition: all .3s ease-in-out;
+              transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+            }
+            .container {
+              border: 2px solid #dedede;
+              background-color: #f1f1f1;
+              border-radius: 5px;
+              padding: 10px;
+              margin: 10px 0;
+            }
+
+            /* Darker chat container */
+            .darker {
+              border-color: #ccc;
+              background-color: #ddd;
+            }
+
+            /* Clear floats */
+            .container::after {
+              content: "";
+              clear: both;
+              display: table;
+            }
+
+            /* Style images */
+            .container img {
+              float: left;
+              max-width: 60px;
+              width: 100%;
+              margin-right: 20px;
+              border-radius: 50%;
+            }
+
+            /* Style the right image */
+            .container img.right {
+              float: right;
+              margin-left: 20px;
+              margin-right:0;
+            }
+
+            /* Style time text */
+            .time-right {
+              float: right;
+              color: #aaa;
+            }
+
+            /* Style time text */
+            .time-left {
+              float: left;
+              color: #999;
+            }
+            
+            /*!
+             * Start Bootstrap - Simple Sidebar (https://startbootstrap.com/template-overviews/simple-sidebar)
+             * Copyright 2013-2019 Start Bootstrap
+             * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-simple-sidebar/blob/master/LICENSE)
+             */
+            body {
+              overflow-x: hidden;
+            }
+
+            .sidebar-wrapper {
+              min-height: 100vh;
+              margin-left: -15rem;
+              -webkit-transition: margin .25s ease-out;
+              -moz-transition: margin .25s ease-out;
+              -o-transition: margin .25s ease-out;
+              transition: margin .25s ease-out;
+            }
+
+            .sidebar-wrapper .sidebar-heading {
+              padding: 0.875rem 1.25rem;
+              font-size: 1.2rem;
+            }
+
+            .sidebar-wrapper .list-group {
+              width: 15rem;
+            }
+
+            #page-content-wrapper {
+              min-width: 100vw;
+            }
+
+            #wrapper.toggled .sidebar-wrapper {
+              margin-left: 0;
+            }
+
+            @media (min-width: 768px) {
+              .sidebar-wrapper {
+                margin-left: 0;
+              }
+
+              #page-content-wrapper {
+                min-width: 0;
+                width: 100%;
+              }
+
+              #wrapper.toggled .sidebar-wrapper {
+                margin-left: -15rem;
+              }
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+          <a class="navbar-brand" href="#">'Your Phone' Analyzer</a>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="conversations"><b>Conversations</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="address-book"><b>Address book</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="photos"><b>Photos</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="call-history"><b>Call history</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="phone-apps"><b>Apps</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="deleted"><b>Deleted</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="timeline"><b>Timeline</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="phone-map"><b>Phone Map</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="connections"><b>Connections graph </b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="ml"><b>Detection/Recognition</b></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button" id="imei"><b>IMEI Search</b></a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <div class="d-flex" id="wrapper">
+
+            <!-- Sidebars -->
+            <div class="bg-light border-right sidebar-wrapper" id="sidebar-wrapper">
+                <div class="sidebar-heading"><b>Conversations</b></div>
+                <div class="list-group list-group-flush" id="sidebar-chats">
+                    <!-- Sidebar chats go here -->
+                </div>
+            </div>
+            <!-- /#sidebar-wrapper -->
+
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+                <!-- Chat content goes here -->
+            <!-- /#page-content-wrapper -->
+            </div>
+        <!-- /#wrapper -->
+        </div>
+
+        <!-- Bootstrap core JavaScript -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    </body>
+</html>
